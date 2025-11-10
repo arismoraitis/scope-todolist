@@ -1,9 +1,6 @@
 
 import { useState} from "react";
-import {Trash2} from "lucide-react";
-import {Edit} from "lucide-react";
-import {Save} from "lucide-react";
-import {X} from "lucide-react";
+import {Square, Trash2, Edit, Save, X, CheckSquare} from "lucide-react";
 import type {TodoListProps} from "../types.ts";
 
 
@@ -34,13 +31,20 @@ const TodoList = ({todos, dispatch}: TodoListProps) => {
         setEditText("");
     }
 
+    const handleToggle = (id: number) => {
+        dispatch({type: "COMPLETE", payload: id})
+    }
+
+
+
     return (
 
         <>
 <ul className="space-y-2">
 
     {todos.map(item => (
-    <li key={item.id} className="flex items-center justify-between bg-scope-gray p-3 rounded">
+    <li key={item.id}
+        className={`flex items-center justify-between bg-scope-gray p-3 rounded ${item.completed ? "opacity-60 line-through" : ""}`}>
 
         {
             editId === item.id ? (
@@ -69,7 +73,20 @@ const TodoList = ({todos, dispatch}: TodoListProps) => {
                 </>
             ) :
                 <>
+                    <div className="flex item-center gap-2 flex-1">
+                    <button
+                    className="text-green-500"
+                    onClick={() => handleToggle(item.id)}
+                    >
+                        {item.completed ? (
+                     <CheckSquare size={18}/>
+                            ): (
+                     <Square size={18}/>)}
+
+                    </button>
+
                     <span>{item.text}</span>
+                    </div>
                     <div className="flex gap-2">
                         <button
                             onClick={() => handleEdit(item.id, item.text)}

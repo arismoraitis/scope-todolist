@@ -6,7 +6,7 @@ export type TodoProps = {
 export type Action =
     | {type: "ADD"; payload: string}
     | {type: "DELETE"; payload: number}
-    | {type: "EDIT"; payload: }
+    | {type: "EDIT"; payload: string}
 
 export type TodoFormProps = {
     dispatch: React.Dispatch<Action>;

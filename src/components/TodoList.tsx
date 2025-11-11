@@ -36,7 +36,6 @@ const TodoList = ({todos, dispatch}: TodoListProps) => {
     }
 
 
-
     return (
 
         <>

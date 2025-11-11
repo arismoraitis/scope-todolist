@@ -1,8 +1,15 @@
-import { useReducer } from "react";
+import {useEffect, useReducer} from "react";
 import TodoForm from "./TodoForm.tsx";
 import TodoList from "./TodoList.tsx";
 import type {TodoProps, Action} from "../types.ts";
 
+
+// για να πάρω μία πληροφορία από το Local Storage χρησιμοποιώ getItem
+const getInitialTodos = () => {
+  const stored =  localStorage.getItem("todos");
+  // εάν υπάρχει πληροφοία τότε πέρασέ την στο Initial State κάνοντας την parse (από string που την είχαμε κάνει την κάνουμε ξανά json object ή array) αλλιώς γύρνα μου το αρχικό Initial State που ήταν [].
+    return stored ? JSON.parse(stored) : [];
+}
 
 const todoReducer = (state: TodoProps[], action: Action): TodoProps[] => {
 
@@ -44,7 +51,17 @@ const todoReducer = (state: TodoProps[], action: Action): TodoProps[] => {
 const Todo = () => {
 
     //todos είναι το state του Reducer, dispatch είναι η δυνατότητα να χρησιμοποιήσω το κάθε case.
-    const [todos, dispatch] = useReducer(todoReducer, []);
+    // χρησιμοποιώ την προαιρετική επιλογή της Reducer το init? με όνομα getInitialTodos με σκοπό να αλλάξει το αρχικό Initial State που έχουμε δηλώσει ως []
+    const [todos, dispatch] = useReducer(todoReducer, [], getInitialTodos);
+
+// για να στείλω πληροφορία στην Local Storage χρησιμοποιώ setItem και να μπορέσει η Local Storage να διαβάσει την πληροφορία θα πρέπει αυτή η πληροφορία να είναι String γι'αυτό και χρησιμοποιούμε την stringify
+    useEffect (()=> {
+        //
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }, [todos])
+
+
+
 
     return (
 

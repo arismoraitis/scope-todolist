@@ -1,6 +1,8 @@
 import {useEffect, useReducer} from "react";
 import TodoForm from "./TodoForm.tsx";
 import TodoList from "./TodoList.tsx";
+import ClearAllButton from "./ClearAllButton.tsx";
+import StatsTasks from "./StatsTasks.tsx";
 import type {TodoProps, Action} from "../types.ts";
 
 
@@ -55,10 +57,6 @@ const Todo = () => {
     //todos είναι το state του Reducer, dispatch είναι η δυνατότητα να χρησιμοποιήσω το κάθε case.
     // χρησιμοποιώ την προαιρετική επιλογή της Reducer το init? με όνομα getInitialTodos με σκοπό να αλλάξει το αρχικό Initial State που έχουμε δηλώσει ως []
     const [todos, dispatch] = useReducer(todoReducer, [], getInitialTodos);
-    const totalTasks: number = todos.length;
-    // φίλτραρε τον πίνακα todos και κράτα μόνο όσα έχουνε μέσα το completed = true και από αυτά που θα μείνουν μέσω της length μέτρα πόσα tasks έχουν ολοκληρωθεί.
-    const completedTasks: number = todos.filter(item => item.completed).length;
-    const activeTasks: number = totalTasks - completedTasks;
 
 
 // για να στείλω πληροφορία στην Local Storage χρησιμοποιώ setItem και να μπορέσει η Local Storage να διαβάσει την πληροφορία θα πρέπει αυτή η πληροφορία να είναι String γι'αυτό και χρησιμοποιούμε την stringify
@@ -66,10 +64,6 @@ const Todo = () => {
         //
         localStorage.setItem("todos", JSON.stringify(todos));
     }, [todos])
-
-    const handleClearAll = () => {
-        dispatch({type: "CLEAR_ALL"});
-    }
 
 
     return (
@@ -79,24 +73,8 @@ const Todo = () => {
                 <h1 className="text-center text-2xl mb-4">To-Do List</h1>
 <TodoForm dispatch={dispatch} />
 <TodoList todos={todos} dispatch={dispatch} />
-                {todos.length > 1 && (
-                    <>
-                        <div className="flex justify-between border-t pt-2 mt-4">
-                        <span>Total: {totalTasks}</span>
-                            <span>Active: {activeTasks}</span>
-                            <span>Completed: {completedTasks}</span>
-
-                        </div>
-                        <div className="text-end mt-4">
-                            <button
-                                className="bg-scope-gray text-scope-dark-gray px-3 py-3 rounded"
-                                onClick={handleClearAll}
-                            >
-                                Clear All
-                            </button>
-                        </div>
-                    </>
-                )}
+<StatsTasks todos={todos}/>
+<ClearAllButton todos={todos} dispatch={dispatch}/>
             </div>
 
 

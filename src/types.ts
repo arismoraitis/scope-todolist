@@ -20,3 +20,9 @@ export type TodoListProps = {
     todos: TodoProps[];
     dispatch: React.Dispatch<Action>;
 }
+
+export type TasksStatsProps = {
+    todos: TodoProps[];
+}
+
+export type ClearAllBtnProps = TodoListProps;

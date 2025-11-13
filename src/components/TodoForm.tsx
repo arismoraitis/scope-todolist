@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState, useEffect} from "react";
 import type {TodoFormProps} from "../types.ts";
 
 
@@ -6,6 +6,8 @@ import type {TodoFormProps} from "../types.ts";
 const TodoForm = ({ dispatch }: TodoFormProps) => {
 
     const [text, setText] = useState("");
+
+    const inputRef = useRef<HTMLInputElement>(null);
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,15 +21,22 @@ const TodoForm = ({ dispatch }: TodoFormProps) => {
         {
             dispatch({type: "ADD", payload: text})
             setText(""); // καθάρισε το input
+            inputRef.current?.focus();
         }
     };
+
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
 
     return (
 
         <>
             <form className="flex gap-4 mb-4"
                   onSubmit={handleSubmit}>
-                <input type="text"
+                <input
+                       ref={inputRef}
+                       type="text"
                        value={text}
                        onChange={handleChange}
                        className="flex-1 border p-2 rounded"

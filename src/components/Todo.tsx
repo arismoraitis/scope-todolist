@@ -52,6 +52,7 @@ const todoReducer = (state: TodoProps[], action: Action): TodoProps[] => {
 
 };
 
+
 const Todo = () => {
 
     //todos είναι το state του Reducer, dispatch είναι η δυνατότητα να χρησιμοποιήσω το κάθε case.
